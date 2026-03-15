@@ -1,0 +1,12 @@
+
+body{margin:0;font-family:Arial;background:#f0f2f5}
+.header{display:flex;align-items:center;gap:10px;padding:15px;background:black;color:white}
+.logo{width:40px}
+.main{display:flex;gap:20px;padding:20px}
+.chat-section,.image-section{flex:1;display:flex;flex-direction:column}
+.chat{flex:1;background:white;border-radius:10px;padding:10px;margin-bottom:10px;overflow-y:auto}
+.input-area{display:flex;gap:10px}
+input,textarea{flex:1;padding:10px;font-size:16px}
+button{background:black;color:white;border:none;padding:10px 20px;border-radius:6px;cursor:pointer}
+.user{background:black;color:white;padding:8px;border-radius:8px;margin:5px 0;align-self:flex-end}
+.bot{background:#ddd;padding:8px;border-radius:8px;margin:5px 0}

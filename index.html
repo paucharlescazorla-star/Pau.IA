@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pau AI</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+<img src="logo.svg" class="logo">
+<h1>Pau AI</h1>
+</header>
+
+<main class="main">
+
+<div class="chat-section">
+<div id="chat" class="chat"></div>
+
+<div class="input-area">
+<input id="messageInput" placeholder="Escribe un mensaje...">
+<button onclick="sendMessage()">Enviar</button>
+</div>
+</div>
+
+<div class="image-section">
+<textarea id="imagePrompt" placeholder="Describe la imagen que quieres generar..."></textarea>
+<button onclick="generateImage()">Generar Imagen</button>
+<div id="imageResult"></div>
+</div>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
