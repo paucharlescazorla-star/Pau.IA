@@ -17,9 +17,7 @@ if(!text)return;
 addMessage(text,"user");
 input.value="";
 
-setTimeout(()=>{
-addMessage("Hola, soy Pau AI. Esta es una demo del chat.","bot");
-},500);
+
 }
 
 function generateImage(){
