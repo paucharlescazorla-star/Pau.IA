@@ -1,38 +1,41 @@
-
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pau AI</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pau.IA Chat</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+    #chat { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; background: #fff; margin-bottom: 10px; }
+    .user { color: blue; margin: 5px 0; }
+    .ai { color: green; margin: 5px 0; }
+    .error { color: red; margin: 5px 0; }
+    input { padding: 5px; width: 70%; }
+    button { padding: 5px 10px; margin-left: 5px; }
+    #imageResult img { margin-top: 10px; }
+  </style>
 </head>
 <body>
 
-<header class="header">
-<img src="logo.svg" class="logo">
-<h1>Pau AI</h1>
-</header>
+  <h1>Pau.IA Chat</h1>
 
-<main class="main">
+  <!-- Contenedor de mensajes -->
+  <div id="chat"></div>
 
-<div class="chat-section">
-<div id="chat" class="chat"></div>
+  <!-- Input del usuario y botón de enviar -->
+  <input type="text" id="messageInput" placeholder="Escribe algo...">
+  <button onclick="sendMessage()">Enviar</button>
 
-<div class="input-area">
-<input id="messageInput" placeholder="Escribe un mensaje...">
-<button onclick="sendMessage()">Enviar</button>
-</div>
-</div>
+  <hr>
 
-<div class="image-section">
-<textarea id="imagePrompt" placeholder="Describe la imagen que quieres generar..."></textarea>
-<button onclick="generateImage()">Generar Imagen</button>
-<div id="imageResult"></div>
-</div>
+  <!-- Input y botón para generar imágenes -->
+  <input type="text" id="imagePrompt" placeholder="Prompt para imagen">
+  <button onclick="generateImage()">Generar imagen</button>
 
-</main>
+  <!-- Contenedor para mostrar la imagen -->
+  <div id="imageResult"></div>
 
-<script src="app.js"></script>
+  <!-- Conexión con tu app.js -->
+  <script src="app.js"></script>
 </body>
 </html>
