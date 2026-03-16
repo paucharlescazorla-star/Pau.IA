@@ -1,47 +1,52 @@
+// Contenedor de chat
+const chat = document.getElementById("chat");
 
-const chat=document.getElementById("chat");
-
-function addMessage(text,cls){
-const div=document.createElement("div");
-div.className=cls;
-div.textContent=text;
-chat.appendChild(div);
-chat.scrollTop=chat.scrollHeight;
+// Función para añadir un mensaje al chat
+function addMessage(text, cls) {
+  const div = document.createElement("div");
+  div.className = cls;
+  div.textContent = text;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
 }
 
- async function sendMessage() {
-  const message = document.getElementById("input").value;
+// Función para enviar un mensaje al backend
+async function sendMessage() {
+  const input = document.getElementById("messageInput");
+  const text = input.value.trim();
+  if (!text) return;
 
-  const res = await fetch("/api/chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message }),
-  });
+  // Mostrar el mensaje del usuario en el chat
+  addMessage(text, "user");
+  input.value = "";
 
-  const data = await res.json();
-  
-  const chatBox = document.getElementById("chat-box");
-  const msgDiv = document.createElement("div");
-  msgDiv.textContent = "IA: " + data.reply;
-  chatBox.appendChild(msgDiv);
-}{
-const input=document.getElementById("messageInput");
-const text=input.value.trim();
-if(!text)return;
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text }),
+    });
 
-addMessage(text,"user");
-input.value="";
+    const data = await res.json();
+
+    // Mostrar la respuesta de la IA
+    addMessage("IA: " + data.reply, "ai");
+  } catch (error) {
+    console.error("Error al enviar mensaje:", error);
+    addMessage("Error al enviar mensaje. Revisa la consola.", "error");
+  }
 }
 
-function generateImage(){
-const prompt=document.getElementById("imagePrompt").value.trim();
-if(!prompt)return;
+// Función para generar imágenes (si tu proyecto lo usa)
+function generateImage() {
+  const prompt = document.getElementById("imagePrompt").value.trim();
+  if (!prompt) return;
 
-const result=document.getElementById("imageResult");
-result.innerHTML="";
+  const result = document.getElementById("imageResult");
+  result.innerHTML = "";
 
-const img=document.createElement("img");
-img.src="https://via.placeholder.com/400x300.png?text="+encodeURIComponent(prompt);
-img.style.maxWidth="100%";
-result.appendChild(img);
+  const img = document.createElement("img");
+  img.src = "https://via.placeholder.com/400x300.png?text=" + encodeURIComponent(prompt);
+  img.style.maxWidth = "100%";
+  result.appendChild(img);
 }
