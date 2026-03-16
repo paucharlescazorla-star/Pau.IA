@@ -9,7 +9,7 @@ chat.appendChild(div);
 chat.scrollTop=chat.scrollHeight;
 }
 
-function async function sendMessage() {
+ async function sendMessage() {
   const message = document.getElementById("input").value;
 
   const res = await fetch("/api/chat", {
