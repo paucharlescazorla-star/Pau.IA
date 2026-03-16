@@ -16,8 +16,6 @@ if(!text)return;
 
 addMessage(text,"user");
 input.value="";
-
-
 }
 
 function generateImage(){
