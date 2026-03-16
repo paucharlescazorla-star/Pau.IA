@@ -9,7 +9,22 @@ chat.appendChild(div);
 chat.scrollTop=chat.scrollHeight;
 }
 
-function sendMessage(){
+function async function sendMessage() {
+  const message = document.getElementById("input").value;
+
+  const res = await fetch("/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message }),
+  });
+
+  const data = await res.json();
+  
+  const chatBox = document.getElementById("chat-box");
+  const msgDiv = document.createElement("div");
+  msgDiv.textContent = "IA: " + data.reply;
+  chatBox.appendChild(msgDiv);
+}{
 const input=document.getElementById("messageInput");
 const text=input.value.trim();
 if(!text)return;
