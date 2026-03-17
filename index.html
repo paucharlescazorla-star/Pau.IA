@@ -11,12 +11,13 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Mensaje vacío" });
     }
 
-    const reply = `Pau.AI dice: "${message}"`;
+    // Simulación de respuesta IA
+    const reply = `Pau.AI: ${message}`;
 
     return res.status(200).json({ reply });
 
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Error interno" });
+    console.error("ERROR API:", error);
+    return res.status(500).json({ error: "Error interno del servidor" });
   }
 }
