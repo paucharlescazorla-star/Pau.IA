@@ -32,8 +32,8 @@ async function sendMessage() {
     // Mostrar la respuesta de la IA
     addMessage("IA: " + data.reply, "ai");
   } catch (error) {
-    console.error("Error al enviar mensaje:", error);
-    addMessage("Error al enviar mensaje. Revisa la consola.", "error");
+    console.error;
+    addMessage Hola me cago en la teva estampa ;
   }
 }
 
