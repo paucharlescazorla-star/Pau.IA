@@ -11,12 +11,12 @@ function addMessage(text, cls) {
 }
 
 // Función para enviar un mensaje al backend
-async function sendMessage(Hola soc Pau Charles Cazorla) {
+async function sendMessage() {
   const input = document.getElementById("messageInput");
   const text = input.value.trim();
   if (!text) return;
 
-  // Mostrar el mensaje del usuario en el chat
+  // Mostrar el mensaje del usuario
   addMessage(text, "user");
   input.value = "";
 
@@ -32,12 +32,12 @@ async function sendMessage(Hola soc Pau Charles Cazorla) {
     // Mostrar la respuesta de la IA
     addMessage("IA: " + data.reply, "ai");
   } catch (error) {
-    console.error;
-    addMessage;
+    console.error("Error al enviar mensaje:", error);
+    addMessage("Error al enviar mensaje. Revisa la consola.", "error");
   }
 }
 
-// Función para generar imágenes (si tu proyecto lo usa)
+// Función para generar imágenes (si lo usas)
 function generateImage() {
   const prompt = document.getElementById("imagePrompt").value.trim();
   if (!prompt) return;
