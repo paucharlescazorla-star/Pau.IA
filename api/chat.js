@@ -1,20 +1,16 @@
-import OpenAI from "openai";
+// pages/api/chat.js
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
-export default async function handler(req, res) {
-  const { message } = req.body;
-
-  if (!message) return res.status(400).json({ error: "No message provided" });
-
+export default function handler(req, res) {
   try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: message }],
+    // 🔥 RESPUESTA SIMPLE PARA PROBAR
+    return res.status(200).json({
+      reply: "API funcionando correctamente"
     });
 
-    res.status(200).json({ reply: response.choices[0].message.content });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("ERROR:", error);
+    return res.status(200).json({
+      reply: "Error controlado"
+    });
   }
 }
