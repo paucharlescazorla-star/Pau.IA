@@ -33,7 +33,7 @@ async function sendMessage() {
     addMessage("IA: " + data.reply, "ai");
   } catch (error) {
     console.error;
-    addMessage Hola me cago en la teva estampa ;
+    addMessage;
   }
 }
 
