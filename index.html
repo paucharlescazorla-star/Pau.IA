@@ -1,23 +1,111 @@
-// pages/api/chat.js
-export default async function handler(req, res) {
-  try {
-    if (req.method !== "POST") {
-      return res.status(405).json({ error: "Método no permitido" });
+import { useState } from "react";
+
+export default function Home() {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+
+    const userMessage = input;
+
+    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
+    setInput("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: userMessage }),
+      });
+
+      const data = await res.json(); // 👈 IMPORTANTE
+
+      if (data.error) {
+        alert(data.error);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: data.reply },
+        ]);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error conectando con el servidor");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    const { message } = req.body;
+  return (
+    <div className="flex h-screen bg-[#343541] text-white">
+      
+      {/* SIDEBAR */}
+      <div className="w-64 bg-[#202123] p-4 hidden md:flex flex-col">
+        <div className="text-xl font-bold mb-6">Pau.AI</div>
+        <button className="border border-gray-600 rounded-lg p-2 hover:bg-gray-700 transition">
+          + Nueva conversación
+        </button>
+      </div>
 
-    if (!message) {
-      return res.status(400).json({ error: "Mensaje vacío" });
-    }
+      {/* MAIN */}
+      <div className="flex flex-col flex-1">
 
-    // Simulación de respuesta IA
-    const reply = `Pau.AI: ${message}`;
+        {/* HEADER */}
+        <div className="p-4 border-b border-gray-700 text-center font-semibold">
+          Pau.AI
+        </div>
 
-    return res.status(200).json({ reply });
+        {/* MENSAJES */}
+        <div className="flex-1 overflow-y-auto">
+          {messages.map((msg, i) => (
+            <div
+              key={i}
+              className={`w-full py-6 px-4 ${
+                msg.role === "assistant"
+                  ? "bg-[#444654]"
+                  : "bg-[#343541]"
+              }`}
+            >
+              <div className="max-w-3xl mx-auto flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
+                  {msg.role === "user" ? "T" : "AI"}
+                </div>
+                <div>{msg.content}</div>
+              </div>
+            </div>
+          ))}
 
-  } catch (error) {
-    console.error("ERROR API:", error);
-    return res.status(500).json({ error: "Error interno del servidor" });
-  }
+          {loading && (
+            <div className="p-4 text-gray-400">Pau.AI está escribiendo...</div>
+          )}
+        </div>
+
+        {/* INPUT */}
+        <div className="p-4 bg-[#343541] border-t border-gray-700">
+          <div className="max-w-3xl mx-auto flex gap-2">
+            <input
+              className="flex-1 bg-[#40414f] p-3 rounded-lg outline-none"
+              placeholder="Escribe un mensaje..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            />
+
+            <button
+              onClick={sendMessage}
+              className="bg-green-600 px-4 rounded-lg hover:bg-green-700"
+            >
+              Enviar
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
 }
