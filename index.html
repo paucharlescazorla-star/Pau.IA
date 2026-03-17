@@ -1,41 +1,75 @@
-!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pau.IA Chat</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
-    #chat { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; background: #fff; margin-bottom: 10px; }
-    .user { color: blue; margin: 5px 0; }
-    .ai { color: green; margin: 5px 0; }
-    .error { color: red; margin: 5px 0; }
-    input { padding: 5px; width: 70%; }
-    button { padding: 5px 10px; margin-left: 5px; }
-    #imageResult img { margin-top: 10px; }
-  </style>
-</head>
-<body>
+// pages/index.js
+import { useState } from "react";
 
-  <h1>Pau.IA Chat</h1>
+export default function ChatPage() {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  <!-- Contenedor de mensajes -->
-  <div id="chat"></div>
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+    const userMessage = input;
+    setMessages(prev => [...prev, { from: "user", text: userMessage }]);
+    setInput("");
+    setLoading(true);
 
-  <!-- Input del usuario y botón de enviar -->
-  <input type="text" id="messageInput" placeholder="Escribe algo...">
-  <button onclick="sendMessage()">Enviar</button>
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMessage })
+      });
 
-  <hr>
+      const text = await response.text();
+      let data;
+      try { data = JSON.parse(text); } 
+      catch { throw new Error(`Respuesta no JSON: ${text}`); }
 
-  <!-- Input y botón para generar imágenes -->
-  <input type="text" id="imagePrompt" placeholder="Prompt para imagen">
-  <button onclick="generateImage()">Generar imagen</button>
+      if (data.error) {
+        alert(`Error: ${data.error}`);
+      } else {
+        setMessages(prev => [...prev, { from: "ai", text: data.reply }]);
+      }
 
-  <!-- Contenedor para mostrar la imagen -->
-  <div id="imageResult"></div>
+    } catch (err) {
+      console.error("Error al enviar mensaje:", err);
+      alert("Hubo un error al enviar el mensaje. Revisa la consola.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  <!-- Conexión con tu app.js -->
-  <script src="app.js"></script>
-</body>
-</html>
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
+      <h1 className="text-4xl font-semibold text-gray-800 mb-6">💬 Chat IA Formal</h1>
+
+      <div className="w-full max-w-xl bg-white shadow-lg rounded-2xl p-6 flex flex-col space-y-4 overflow-y-auto h-[60vh]">
+        {messages.map((msg, idx) => (
+          <div key={idx} className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"}`}>
+            <div className={`px-4 py-2 rounded-xl ${msg.from === "user" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-800"}`}>
+              {msg.text}
+            </div>
+          </div>
+        ))}
+        {loading && <p className="text-gray-500 italic">IA está escribiendo...</p>}
+      </div>
+
+      <div className="flex w-full max-w-xl mt-4 space-x-2">
+        <input
+          type="text"
+          className="flex-1 border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Escribe tu mensaje..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+        />
+        <button
+          className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 transition-colors"
+          onClick={sendMessage}
+        >
+          Enviar
+        </button>
+      </div>
+    </div>
+  );
+}
