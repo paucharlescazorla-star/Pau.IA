@@ -11,7 +11,7 @@ function addMessage(text, cls) {
 }
 
 // Función para enviar un mensaje al backend
-async function sendMessage() {
+async function sendMessage(Hola soc Pau Charles Cazorla) {
   const input = document.getElementById("messageInput");
   const text = input.value.trim();
   if (!text) return;
